@@ -17,7 +17,7 @@
           vlan_id: 40
         - name: DMZ
           vlan_id: 50
-      register: vlan_config
+    register: vlan_config
   
   - name: print vlan config
     debug:
