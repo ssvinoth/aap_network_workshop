@@ -21,6 +21,5 @@
   
   - name: print vlan config
     debug:
-      var: vlan_config | to_nice_yaml
+      var: vlan_config.gathered
     when: vlan_rm_state == "gathered"
-    
