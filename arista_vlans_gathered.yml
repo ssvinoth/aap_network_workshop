@@ -1,0 +1,15 @@
+  ---
+  - name: Get VLANs
+    hosts: arista
+    gather_facts: false
+
+    tasks:
+
+    - name: use vlans resource module
+      arista.eos.vlans:
+        state: gathered
+      register: vlan_config
+    
+    - name: print vlan config
+      debug:
+        var: vlan_config | to_nice_yaml
