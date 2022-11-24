@@ -11,4 +11,4 @@
       
     - name: print vlan config
       debug:
-        var: vlan_config
+        var: vlan_config.gathered
