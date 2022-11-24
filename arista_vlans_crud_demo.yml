@@ -19,7 +19,7 @@
           vlan_id: 50
     register: vlan_config
   
-  - name: print vlan config
+  - name: print vlan config when gathered
     debug:
       var: vlan_config.gathered
     when: vlan_rm_state == "gathered"
