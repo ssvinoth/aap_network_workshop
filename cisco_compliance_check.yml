@@ -5,7 +5,7 @@
 
   tasks:
     - name: check snmp-server configs are present
-      cisco.ios.ios_snmp_server:
+      cisco.ios.snmp_server:
         config: "{{ snmp.config }}"
         state: "{{ snmp.state }}"
       check_mode: true
