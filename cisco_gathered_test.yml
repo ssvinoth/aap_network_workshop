@@ -5,7 +5,7 @@
 
   tasks:
     - name: use resource module
-      cisco.ios.ios_snmp_server:
+      ios_snmp_server:
         state: gathered
       register: snmp_config
       
