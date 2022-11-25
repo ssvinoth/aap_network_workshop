@@ -57,3 +57,22 @@
         msg: 
           - "acl_compliance {{ acl_compliance }}"
           - "acl fix commands {{ acl_deviation_fix }}"
+
+    - name: Generate Report Date Time
+      set_fact:
+        datetime: "{{ ansible_date_time.date }}_{{ ansible_date_time.time |  replace(':','-') }}" 
+      delegate_to: localhost
+      delegate_facts: true
+      run_once: true
+
+    - name: Copy report file to report server
+      ansible.builtin.template:
+        src: templates/cisco_compliance_report.j2
+        dest: "/opt/ansible/reports/network_compliance/network_compliance_Report_{{ hostvars['localhost'].datetime }}.html"
+      delegate_to: localhost  
+      run_once: yes
+
+    - name: Print Report location
+      debug:
+        msg: "http://{{ report_server }}/network_compliance/network_compliance_Report_{{ hostvars['localhost'].datetime }}.html"
+      run_once: yes

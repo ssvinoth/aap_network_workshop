@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <!-- <link rel="stylesheet" href="css/main.css"> -->
+  <style> 
+  * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+  background:#353a40;
+}
+
+h1,h2,h3,h3,h4,h5,h6 {
+  color: white;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
+
+table {
+  border-collapse: separate;
+  background:#fff;
+  @include border-radius(5px);
+  margin:50px auto;
+  @include box-shadow(0px 0px 5px rgba(0,0,0,0.3));
+  /* border: 1px solid black; */
+}
+
+thead {
+  @include border-radius(5px);
+}
+
+thead th {
+  font-family: 'Patua One', monospace;
+  font-size:16px;
+  font-weight:400;
+  color:#fff;
+  @include text-shadow(1px 1px 0px rgba(0,0,0,0.5));
+  text-align:left;
+  padding:20px;
+  border-top:1px solid #858d99;
+  background: #353a40;
+  /* border: 1px solid black; */
+
+  &:first-child {
+   @include border-top-left-radius(5px);
+  }
+
+  &:last-child {
+    @include border-top-right-radius(5px);
+  }
+}
+
+tbody tr td {
+  font-family: 'Open Sans', sans-serif;
+  font-weight:400;
+  color:#5f6062;
+  font-size:13px;
+  padding:20px 20px 20px 20px;
+  border-bottom:1px solid #e0e0e0;
+  white-space:pre;
+  border: 1px solid black;
+}
+
+
+  tbody tr:nth-child(2n) {
+  background:#f0f3f5;
+} 
+
+tbody tr:last-child td {
+  border-bottom:none;
+  &:first-child {
+    @include border-bottom-left-radius(5px);
+  }
+  &:last-child {
+    @include border-bottom-right-radius(5px);
+  }
+}
+
+span.highlight {
+    background-color: yellow;
+}
+
+.error {
+    background:#f6c9cb;
+    color:#003399; 
+}
+
+.warn {
+    background:#F4F463;
+}
+
+.success {
+    background:#C1F4D8; 
+}
+  </style>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <th>Hostname</th>
+            <th>Model Type</th>
+            <th>SNMP Compliance</th>
+            <th>NTP Compliance</th>
+            <th>ACL Compliance</th>
+            <th>Compliance Fix Commands</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for network_switch in ansible_play_hosts_all %}
+    {# print only for active hosts  #}
+    {% if network_switch in ansible_play_hosts %}
+        <tr>
+            <td>{{hostvars[network_switch]['ansible_net_hostname']}}</td>
+            <td>{{hostvars[network_switch]['ansible_net_model']}}</td>
+            {# Get all the compliance status eg., ntp,snmp,acl  #}
+
+            {# SNMP CONFIG #}
+            {% if hostvars[network_switch]['snmp_compliance'] | bool %}
+            <td style="background:warn">Non Compliant</td>
+            {% else %}
+            <td style="background:success">Compliant</td>
+            {% endif %}
+
+            {# NTP CONFIG #}
+            {% if hostvars[network_switch]['ntp_compliance'] | bool %}
+            <td style="background:warn">Non Compliant</td>
+            {% else %}
+            <td style="background:success">Compliant</td>
+            {% endif %}
+
+            {# ACL CONFIG #}
+            {% if hostvars[network_switch]['acl_compliance'] | bool %}
+            <td style="background:warn">Non Compliant</td>
+            {% else %}
+            <td style="background:success">Compliant</td>
+            {% endif %}
+
+            {# Commands to Fix #}
+            <td>
+                {% for lineitem in hostvars[network_switch]['snmp_deviation_fix'] %}
+                    {{ lineitem }}
+                {% endfor %}
+
+                {% for lineitem in hostvars[network_switch]['ntp_deviation_fix'] %}
+                    {{ lineitem }}
+                {% endfor %}
+
+                {% for lineitem in hostvars[network_switch]['acl_deviation_fix'] %}
+                    {{ lineitem }}
+                {% endfor %}
+            </td>
+
+        </tr>
+    {% else %}
+        <tr>
+            <td class="error">{{hostvars[network_switch]['inventory_hostname']}}</td>
+            <td class="error">Error: Not Collected</td>
+            <td class="error">Error: Not Collected</td>
+            <td class="error">Error: Not Collected</td>
+            <td class="error">Error: Not Collected</td>
+            <td class="error">Error: Not Collected</td>
+        </tr>
+    {% endif %}
+{% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
