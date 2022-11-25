@@ -1,0 +1,14 @@
+---
+- name: Test Cisco Gathered
+  hosts: cisco
+  gather_facts: true
+
+  tasks:
+    - name: use resource module
+      cisco.ios.ios_snmp_server:
+        state: gathered
+      register: snmp_config
+      
+    - name: print snmp_config
+      debug:
+        var: snmp_config.gathered
