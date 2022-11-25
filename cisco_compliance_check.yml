@@ -1,0 +1,24 @@
+---
+- name: Check Golden Config Compliance
+  hosts: cisco
+  gather_facts: true
+
+  tasks:
+    - name: check snmp-server configs are present
+      cisco.ios.ios_snmp_server:
+        config: "{{ snmp.config }}"
+        state: "{{ snmp.state }}"
+      check_mode: true
+      register: snmp_compliance
+
+    - name: set snmp compliance status
+      ansible.builtin.set_fact:
+        snmp_compliance: "{{ snmp_compliance.changed }}"
+        snmp_deviation_fix: "{{ snmp_compliance.commands }}"
+  
+    - name: print snmp compliance status
+      debug:
+        msg: 
+          - "snmp_compliance {{ snmp_compliance }}"
+          - "snmp fix commands {{ snmp_deviation_fix }}"
+
