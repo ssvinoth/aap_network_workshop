@@ -39,3 +39,21 @@
         msg: 
           - "ntp_compliance {{ ntp_compliance }}"
           - "ntp fix commands {{ ntp_deviation_fix }}"
+
+    - name: check acl configs are present
+      cisco.ios.ios_acls:
+        config: "{{ acl.config }}"
+        state: "{{ acl.state }}"
+      check_mode: true
+      register: acl_compliance
+
+    - name: set acl compliance status
+      ansible.builtin.set_fact:
+        acl_compliance: "{{ acl_compliance.changed }}"
+        acl_deviation_fix: "{{ acl_compliance.commands }}"
+  
+    - name: print acl compliance status
+      debug:
+        msg: 
+          - "acl_compliance {{ acl_compliance }}"
+          - "acl fix commands {{ acl_deviation_fix }}"
