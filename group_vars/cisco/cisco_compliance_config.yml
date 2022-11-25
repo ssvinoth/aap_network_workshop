@@ -220,5 +220,5 @@ acl:
             port_protocol:
               eq: telnet
           dscp: af11    
-  state: replaced
+  state: merged
 
