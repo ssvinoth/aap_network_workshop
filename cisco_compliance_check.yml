@@ -23,7 +23,7 @@
     #       - "snmp fix commands {{ snmp_deviation_fix }}"
 
     - name: check ntp configs are present
-       cisco.ios.ios_ntp_global:
+      cisco.ios.ios_ntp_global:
         config: "{{ ntp.config }}"
         state: "{{ ntp.state }}"
       check_mode: true
