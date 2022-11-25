@@ -120,23 +120,23 @@ span.highlight {
 
             {# SNMP CONFIG #}
             {% if hostvars[network_switch]['snmp_compliance'] | bool %}
-            <td style="background:warn">Non Compliant</td>
+            <td class="warn">Non Compliant</td>
             {% else %}
-            <td style="background:success">Compliant</td>
+            <td class="success">Compliant</td>
             {% endif %}
 
             {# NTP CONFIG #}
             {% if hostvars[network_switch]['ntp_compliance'] | bool %}
-            <td style="background:warn">Non Compliant</td>
+            <td class="warn">Non Compliant</td>
             {% else %}
-            <td style="background:success">Compliant</td>
+            <td class="success">Compliant</td>
             {% endif %}
 
             {# ACL CONFIG #}
             {% if hostvars[network_switch]['acl_compliance'] | bool %}
-            <td style="background:warn">Non Compliant</td>
+            <td class="warn">Non Compliant</td>
             {% else %}
-            <td style="background:success">Compliant</td>
+            <td class="success">Compliant</td>
             {% endif %}
 
             {# Commands to Fix #}
